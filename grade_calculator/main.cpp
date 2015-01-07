@@ -8,6 +8,8 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <vector>
+#include <iterator>
 using namespace std;
 
 int main(int argc, const char * argv[]) {
@@ -27,11 +29,15 @@ int main(int argc, const char * argv[]) {
     
     string grade_input = "";
     
-    //vector <int> v;
+    vector<int> grades;
+    int total = 0;
+    
     string start1 = "start";
     string start2 = "START";
     string exit1 = "exit";
     string exit2 = "EXIT";
+    
+    //Calculate average
     
     if(user_input == start1 || user_input == start2){
         do{
@@ -39,6 +45,7 @@ int main(int argc, const char * argv[]) {
             cout << "Please enter a number grade.\n";
             cin >> grade_input;
             int grade = atoi(grade_input.c_str());
+            grades.push_back(grade);
             //keeps code dry
             string yg = "Your letter grade is: ";
     
@@ -55,11 +62,21 @@ int main(int argc, const char * argv[]) {
                 cout << yg << "C.\n";}
             else if(grade >= 60){
                 cout << yg << "D.\n";}
-            else
-                {cout << yg << "F :(!\n";}
-        }while(grade_input != exit1 && grade_input != exit2);
-        //
-    }
+            else if(grade >= 0){
+                cout << yg << "F :(!\n";}
+            //else
+            
+                        }while(grade_input != exit1 && grade_input != exit2);
+        
+        for(vector<int>::iterator it = grades.begin(); it != grades.end(); ++it){
+            total = *it + total;
+        }
+        
+        int grade_average = 0;
+        grade_average = total / grades.size(); //divide when done adding
+        
+        cout << "Your grade is " << grade_average << endl;}  // total can be configured through the if loop to find the letter grade
+
     else
         {cout << "Invalid answer, type start to begin and exit to leave.\n";}
 ;}
