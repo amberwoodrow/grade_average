@@ -19,7 +19,8 @@
 using namespace std;
 
 void init();
-void do_grade();
+void user_inputs();
+void grade_calc(vector<int> grades);
 string letter_grade(int grade);
 bool is_d(char c);
 bool is_number(string s);
@@ -31,6 +32,7 @@ int main() {
     init();
 }
 
+// Initiates program.
 void init(){
     cout << "Get your grade average!\n"
             "Enter as many grades as you'd like and let the calculator give you your grade average.\n"
@@ -43,7 +45,7 @@ void init(){
         cin >> user_input;
     }
     if(user_input == "start" || user_input == "START"){
-        do_grade();
+        user_inputs();
     }
     else if(user_input == e1 || user_input == e2){
         cout << "Bye-bye!\n";
@@ -51,13 +53,11 @@ void init(){
 
 }
 
-// Do grade handles user input and calculates the average of user input.
-void do_grade(){
+// Handles user input
+void user_inputs(){
     string grade_input = "";
     vector<int> grades;
-    int total = 0;
     
-    // The user can initiate the grade calculation loop by typing start or exit the program by typing exit.
     cout << "Type exit at any time to get your average and exit the program.\n";
     do{
         cout << "Please enter a number grade or type exit.\n";
@@ -79,8 +79,12 @@ void do_grade(){
             {cout << "Not a valid number answer.\n";}
         
     }while(grade_input != e1 && grade_input != e2);
-    
-    //Calculates average
+    grade_calc(grades);
+}
+
+// Calculates average grade then exits program
+void grade_calc(vector<int> grades){
+    int total = 0;
     for(vector<int>::iterator it = grades.begin(); it != grades.end(); ++it){
         total = *it + total;
     }
@@ -96,7 +100,7 @@ void do_grade(){
     }
 }
 
-// returns a string from user's input
+// Returns a string from user's input
 string letter_grade(int grade){
     
     string letter = "";
