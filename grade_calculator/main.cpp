@@ -6,112 +6,97 @@
 //  Copyright (c) 2015 Amber Woodrow. All rights reserved.
 //
 
-//    Write a program that allows the user to enter the grade scored in a programming class (0-100).
-//    If the user scored a 100 then notify the user that they got a perfect score.
-//
-//    ★ Modify the program so that if the user scored a 90-100 it informs the user that they scored an A
-//
-//    ★★ Modify the program so that it will notify the user of their letter grade
-//    0-59 F 60-69 D 70-79 C 80-89 B 90-100 A
-//
-//    ★★★ Modify to average out a grade
+//return value, type, purose whats it used for what does it do.
+
 
 #include <iostream>
 #include <cstdlib>
 #include <vector>
 #include <iterator>
-
 #include <stdio.h>
 #include <string.h>
+#include <algorithm>
 using namespace std;
 
-
+void init();
 void do_grade();
 string letter_grade(int grade);
+bool is_d(char c);
 bool is_number(string s);
-void init();
 
-
+string e1 = "exit";
+string e2 = "EXIT";
 
 int main() {
     init();
-    //do_grade();
 }
-
-
 
 void init(){
     cout << "Get your grade average!\n"
             "Enter as many grades as you'd like and let the calculator give you your grade average.\n"
             "Type start to begin or exit to leave.\n";
-    do_grade();
-       //return j;
+    string user_input = "";
+    cin >> user_input;
+    
+    while(user_input != "start" && user_input != "START" && user_input != e1 && user_input != e2){
+        cout << "Invalid answer, type start to begin and exit to leave.\n";
+        cin >> user_input;
+    }
+    if(user_input == "start" || user_input == "START"){
+        do_grade();
+    }
+    else if(user_input == e1 || user_input == e2){
+        cout << "Bye-bye!\n";
+    }
+
 }
 
-
-
+// Do grade handles user input and calculates the average of user input.
 void do_grade(){
-    // 11111111 array has elements pushed on to it so it starts with and un-needed 0
     string grade_input = "";
     vector<int> grades;
     int total = 0;
     
-    string user_input;
-    cin >> user_input;
-    //bool j = memcmp(&user_input, "start", user_input.size());
-    string e1 = "exit";
-    string e2 = "EXIT";
-    
-    if(user_input == "start" || user_input == "START"){ // start is true
-        cout << "Type exit at any time to get your average.\n";
-        do{
-            
-            cout << "Please enter a number grade.\n";
-            cin >> grade_input;
-            
-            if(grade_input == "exit" || grade_input == "EXIT"){
-                break;
-            }
+    // The user can initiate the grade calculation loop by typing start or exit the program by typing exit.
+    cout << "Type exit at any time to get your average and exit the program.\n";
+    do{
+        cout << "Please enter a number grade or type exit.\n";
+        cin >> grade_input;
         
-            if(is_number(grade_input)){
-                int grade = atoi(grade_input.c_str());
+        if(grade_input == e1 || grade_input == e2){
+            break;
+        }
+    
+        if(is_number(grade_input)){
+            int grade = atoi(grade_input.c_str());
 
-                cout << "Your grade is: " << letter_grade(grade) << endl;
-                if(grade <= 100 && grade >= 0){
-                    grades.push_back(grade);
-                }
+            cout << "Your grade is: " << letter_grade(grade) << endl;
+            if(grade <= 100 && grade >= 0){
+                grades.push_back(grade);
             }
-            else
-                {cout << "Not a valid number answer.\n";}
-            
-        }while(grade_input != "exit" && grade_input != "EXIT");
+        }
+        else
+            {cout << "Not a valid number answer.\n";}
         
-        //Calculates average
-        for(vector<int>::iterator it = grades.begin(); it != grades.end(); ++it){
-            total = *it + total;
-        }
-        
-        if(grades.size() != 0){
-            int grade_average = 0;
-            grade_average = total / grades.size();
-            cout << "Your grade is: " << grade_average << " " << letter_grade(grade_average) << endl;
-        }
-        
-        else {
-            cout << "Bye-bye\n";
-        }
-    }
-    else if(user_input == "exit" || user_input == "EXIT"){
-        cout << "Bye-bye!\n";
-    }
-    else{
-        cout << "Invalid answer, type start to begin and exit to leave.\n";
-        do_grade();
-        }
+    }while(grade_input != e1 && grade_input != e2);
     
+    //Calculates average
+    for(vector<int>::iterator it = grades.begin(); it != grades.end(); ++it){
+        total = *it + total;
+    }
+    
+    if(grades.size() != 0){
+        int grade_average = 0;
+        grade_average = total / grades.size();
+        cout << "Your grade is: " << grade_average << " " << letter_grade(grade_average) << endl;
+    }
+    
+    else {
+        cout << "Bye-bye\n";
+    }
 }
 
-
+// returns a string from user's input
 string letter_grade(int grade){
     
     string letter = "";
@@ -140,16 +125,12 @@ string letter_grade(int grade){
     return letter;
 }
 
-bool is_number(string s){
-    return !s.empty() && find_if(s.begin(), s.end(), [](char c){return !isdigit(c);}) == s.end();
+// Checks if input is a number
+bool is_d(char c){
+    return !isdigit(c);
 }
 
-
-
-
-
-
-
-
-
-
+// Checks if input is a string
+bool is_number(string s){
+    return !s.empty() && find_if(s.begin(), s.end(), is_d) == s.end();
+}
